@@ -16,6 +16,7 @@ public class View extends JPanel implements ChangeListener
     private int x = (App.FRAME_WIDTH-BOARD_WIDTH)/2;
     private int y = (App.FRAME_HEIGHT-BOARD_HEIGHT)/2;
     private ArrayList<Shape> pits;
+    public static HashMap<Integer, Integer> match = Model.pair;
     private Color backgroundColor;
     private ArrayList<Integer> stoneCount;
     private Model model;
@@ -51,27 +52,49 @@ public class View extends JPanel implements ChangeListener
 
     int insideShape(Point2D p)
     {
-    	//int state = 0; use state variable for turns which change from 0 to 1, use this to determine which mancala is skipped
         int result = -1;
         for (int i = 0; i < pits.size(); i++)
             if (pits.get(i).contains(p))
             {
             	result = i;
+            	if(i==0||i==7)
+            		break;
             	int numstones = stoneCount.get(i);
             	stoneCount.set(i,0);
             	for(int j=0; j<numstones;j++)
             	{
-            		//if(j+1==numstones&& new pit value = 1)
-            	//	{
-            	//		set paired pit and current pit to 0
-            	//		
-            	//	}
             		if(i==13)
             		{
             			i=-1;
             		}
+            		if(turn == 1 && i==-1||turn == 2 && i==6)
+            		{
+            			i++;
+            		}
             		stoneCount.set(i+1, stoneCount.get(i+1)+1);
+            		if(j+1==numstones&&stoneCount.get(i+1)==1&&turn==1)
+            		{
+            			if(i<7) {
+            			stoneCount.set(i+1, 0);
+            			stoneCount.set(7,stoneCount.get(7)+stoneCount.get(match.get(i+1))+1);
+            			stoneCount.set(match.get(i+1), 0); 
+            			}
+            		}
+            		else if(j+1==numstones&&stoneCount.get(i+1)==1&&turn==2)
+            		{
+            			if(i>7)
+            			{
+            			stoneCount.set(i+1, 0);
+            			stoneCount.set(0,stoneCount.get(0)+stoneCount.get(match.get(i+1))+1);
+            			stoneCount.set(match.get(i+1), 0);  
+            			}
+            		}
             		i++;
+            		if(turn ==1)
+            			turn =2;
+            		else if(turn ==2)
+            			turn =1;
+
             	}
             }
         repaint();

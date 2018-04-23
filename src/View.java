@@ -51,11 +51,32 @@ public class View extends JPanel implements ChangeListener
 
     int insideShape(Point2D p)
     {
+    	//int state = 0; use state variable for turns which change from 0 to 1, use this to determine which mancala is skipped
         int result = -1;
         for (int i = 0; i < pits.size(); i++)
             if (pits.get(i).contains(p))
-                return i;
+            {
+            	result = i;
+            	int numstones = stoneCount.get(i);
+            	stoneCount.set(i,0);
+            	for(int j=0; j<numstones;j++)
+            	{
+            		//if(j+1==numstones&& new pit value = 1)
+            	//	{
+            	//		set paired pit and current pit to 0
+            	//		
+            	//	}
+            		if(i==13)
+            		{
+            			i=-1;
+            		}
+            		stoneCount.set(i+1, stoneCount.get(i+1)+1);
+            		i++;
+            	}
+            }
+        repaint();
         return result;
+        
     }
 
     public void paintComponent(Graphics g)

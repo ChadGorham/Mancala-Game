@@ -89,12 +89,11 @@ public class View extends JPanel implements ChangeListener
             			stoneCount.set(match.get(i+1), 0);  
             			}
             		}
-            		i++;
-            		if(turn ==1)
+            		if(turn ==1&&i!=7)
             			turn =2;
-            		else if(turn ==2)
+            		else if(turn ==2&&i!=13)
             			turn =1;
-
+            		i++;
             	}
             }
         repaint();
